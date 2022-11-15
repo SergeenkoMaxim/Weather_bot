@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from url_for_weather import urls_for_current_forecats, urls_for_weekly_forecast
+from url_for_weather import urls_for_current_forecast, urls_for_weekly_forecast
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import schedule
@@ -20,31 +20,40 @@ def get_user_city():
 get_user_city()
 get_policy()
 
-for key, value in urls_for_current_forecats.items():
-    if key == user_city:
-        url_for_current_forecast = value
 
-for key, value in urls_for_weekly_forecast.items():
-    if key == user_city:
-        url_for_weekly_forecast = value
+def get_url():
+    global url_for_current_forecast
+
+    for key, value in urls_for_current_forecast.items():
+        if key == user_city:
+            url_for_current_forecast = value
+            return True
+
+
+# for key, value in urls_for_weekly_forecast.items():
+#     if key == user_city:
+#         url_for_weekly_forecast = value
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.'
                   '36 OPR/40.0.2308.81'
 }
-
+if get_url():
+    get_url()
+else:
+    print("Error")
 page_for_current_forecast = requests.get(url_for_current_forecast, headers=headers)
-page_for_weekly_forecast = requests.get(url_for_weekly_forecast, headers=headers)
+# page_for_weekly_forecast = requests.get(url_for_weekly_forecast, headers=headers)
 
 soup_for_currrent_forecast = BeautifulSoup(page_for_current_forecast.text, 'lxml')
-soup_for_weekly_forecast = BeautifulSoup(page_for_weekly_forecast.text, 'lxml')
+# soup_for_weekly_forecast = BeautifulSoup(page_for_weekly_forecast.text, 'lxml')
 
 current_time = soup_for_currrent_forecast.find_all('div', class_='day')
 current_weather = soup_for_currrent_forecast.find_all('div', class_='weather-value')
 
-weekly_day_date = soup_for_weekly_forecast.find_all('div', class_='widget-row widget-row-days-date')
-day_temperature = soup_for_weekly_forecast('div', class_='widget-row-chart widget-row-chart-temperature')
-night_temperature = soup_for_weekly_forecast('div', class_='mint')
+# weekly_day_date = soup_for_weekly_forecast.find_all('div', class_='widget-row widget-row-days-date')
+# day_temperature = soup_for_weekly_forecast('div', class_='widget-row-chart widget-row-chart-temperature')
+# night_temperature = soup_for_weekly_forecast('div', class_='mint')
 
 
 def print_time():

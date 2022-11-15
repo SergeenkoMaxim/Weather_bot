@@ -1,4 +1,4 @@
-urls_for_current_forecats = {
+urls_for_current_forecast = {
     'brest': 'https://www.gismeteo.by/weather-brest-4912/',
     'брест': 'https://www.gismeteo.by/weather-brest-4912/',
     'vitebsk': 'https://www.gismeteo.com/weather-vitebsk-4218/',
@@ -12,6 +12,7 @@ urls_for_current_forecats = {
     'minsk': 'https://www.gismeteo.com/weather-minsk-4248/',
     'минск': 'https://www.gismeteo.com/weather-minsk-4248/'
 }
+
 
 urls_for_weekly_forecast = {
     'brest': 'https://www.gismeteo.by/weather-brest-4912/10-days/',
