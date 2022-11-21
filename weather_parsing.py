@@ -42,6 +42,7 @@ if get_url():
     get_url()
 else:
     print("Error")
+
 page_for_current_forecast = requests.get(url_for_current_forecast, headers=headers)
 # page_for_weekly_forecast = requests.get(url_for_weekly_forecast, headers=headers)
 
