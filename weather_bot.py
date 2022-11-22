@@ -41,17 +41,22 @@ def print_info(message):
 
     url_for_city = urls_for_current_forecast.get(f"{user_city}")
 
-    page_for_current_forecast = requests.get(url_for_city, headers=headers)
-    soup_for_current_forecast = BeautifulSoup(page_for_current_forecast.text, 'lxml')
+    if url_for_city is None:
+        bot.send_message(message.chat.id, f"Город не найден, попробуй снова")
 
-    current_time = soup_for_current_forecast.find_all('div', class_='day')
-    current_weather = soup_for_current_forecast.find_all('div', class_='weather-value')
+    else:
 
-    for weather in current_weather:
-        for time in current_time[0]:
-            if weather.text[2] == ' ':
-                bot.send_message(message.from_user.id, f"Погода в городе {user_city[0].upper() + user_city[1::]}"
-                                                       f" на {time.text} - {weather.text[0:2]}")
+        page_for_current_forecast = requests.get(url_for_city, headers=headers)
+        soup_for_current_forecast = BeautifulSoup(page_for_current_forecast.text, 'lxml')
+
+        current_time = soup_for_current_forecast.find_all('div', class_='day')
+        current_weather = soup_for_current_forecast.find_all('div', class_='weather-value')
+
+        for weather in current_weather:
+            for time in current_time[0]:
+                if weather.text[2] == ' ':
+                    bot.send_message(message.from_user.id, f"Погода в городе {user_city[0].upper() + user_city[1::]}"
+                                                           f" на {time.text} - {weather.text[0:2]}")
 
             else:
                 for time in current_time[0]:
