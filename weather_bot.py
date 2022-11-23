@@ -139,24 +139,4 @@ def create_soup(message):
                                           f"закат: <b>{result_for_sunset[0]}</b> \n", parse_mode='HTML')    #🌆
 
 
-# @bot.message_handler(commands=['week'])
-# def send_screenshot(message):
-#
-#     url_for_photo = urls_for_weekly_forecast.get(f"{user_city}")
-#
-#     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-#     driver.get('url_for_photo')
-#     driver.get_screenshot_as_file("screenshot.png")
-#     driver.quit()
-#
-#     im = Image.open("screenshot.png")
-#     width, height = im.size
-#     box = (200, 492, 1520, 990)
-#     im1 = im.crop(box)
-#     im1.save("new_screenshot.png")
-#
-#     photo = open("new_screenshot.png", 'rb')
-#     bot.send_photo(message.chat.id, photo)
-
-
 bot.polling(interval=0, timeout=0)
