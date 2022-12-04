@@ -36,6 +36,10 @@ class BotDB:
         time = self.cursor.execute("SELECT time FROM Users WHERE telegram_id = ?", (telegram_id,))
         return time.fetchone()[0]
 
+    def get_id_with_time(self, user_time):
+        telegram_it = self.cursor.execute("SELECT telegram_id FROM users WHERE time = ?", (user_time,))
+        return telegram_it.fetchone()[0]
+
     def close(self):
         self.conn.close()
 

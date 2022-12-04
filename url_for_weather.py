@@ -11,7 +11,9 @@ urls_for_current_forecast = {
     'могилев': 'https://www.gismeteo.com/weather-mogilev-4251/now/',
     'могилёв': 'https://www.gismeteo.com/weather-mogilev-4251/now/',
     'minsk': 'https://www.gismeteo.com/weather-minsk-4248/now/',
-    "минск": 'https://www.gismeteo.com/weather-minsk-4248/now/'
+    "минск": 'https://www.gismeteo.com/weather-minsk-4248/now/',
+    "ошмяны": 'https://www.gismeteo.by/weather-oshmyany-4231/now/',
+    "солигорск": 'https://www.gismeteo.by/weather-soligorsk-11817/now/'
 }
 
 

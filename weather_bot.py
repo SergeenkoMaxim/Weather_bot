@@ -11,6 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from db import BotDB
 from add_time import is_time
 import schedule
+from threading import Thread
 import time
 
 headers = {
@@ -103,10 +104,10 @@ def create_soup(message):
                     temperature = weather.text[0:4]
 
         for time in sunrise:
-            result_for_sunrise = time.text[7::]
+            result_for_sunrise = re.findall(r'\d\d\:\d\d', time.text)
 
         for time in sunset:
-            result_for_sunset = time.text[6::]
+            result_for_sunset = re.findall(r'\d\:\d\d', time.text)
 
         # for t in current_water:
             # water = t.text
@@ -133,8 +134,8 @@ def create_soup(message):
                                           f"скорость ветра: <b>{wind} м/с</b> \n"
                                           # f"температура воды: <b>{water}°</b> \n"
                                           f"ощущается как: <b>{feel}°</b> \n"
-                                          f"восход: <b>{result_for_sunrise}</b> \n"            #🌄
-                                          f"закат: <b>{result_for_sunset}</b> \n", parse_mode='HTML')    #🌆
+                                          f"восход: <b>{result_for_sunset[0]}</b> \n"            #🌄
+                                          f"закат: <b>{result_for_sunrise[0]}</b> \n", parse_mode='HTML')    #🌆
 
 
 @bot.message_handler(commands=['subscribe'])
@@ -155,8 +156,11 @@ def show_keyboard(message):
     button_grodno = types.KeyboardButton("Гродно")
     button_mogilev = types.KeyboardButton("Могилев")
     button_minsk = types.KeyboardButton("Минск")
+    button_soligorsk = types.KeyboardButton("Солигорск")
+    button_oshmyani = types.KeyboardButton("Ошмяны")
 
-    markup.add(button_brest, button_vitebsk, button_gomel, button_grodno, button_mogilev, button_minsk)
+    markup.add(button_brest, button_vitebsk, button_gomel, button_grodno, button_mogilev, button_minsk,
+               button_soligorsk, button_oshmyani)
 
     bot.send_message(message.chat.id, "Выбери город", reply_markup=markup)
 
@@ -173,11 +177,14 @@ def set_city(message):
     if url_for_city is None:
         bot.send_message(message.chat.id, f"Город не найден, попробуйте снова!")
     else:
+        bot.send_message(message.chat.id, f"Город успешно установлен! Для получения прогноза /day")
         BotDB.add_city(message.from_user.id, user_city)
 
 
 @bot.message_handler()
 def set_time(message):
+    global time_from_db
+
     user_time = message.text
     time_from_db = BotDB.get_time(message.from_user.id)
     print(time_from_db)
@@ -185,14 +192,16 @@ def set_time(message):
     if is_time(message.text):
         BotDB.add_time(message.from_user.id, user_time)
         bot.send_message(message.from_user.id, f"Время успешно установлено!")
-        schedule.every().day.at(time_from_db).do(create_soup)
-
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
-
     else:
         bot.send_message(message.from_user.id, "Введен неверный формат сообщения! /subscribe")
 
 
+# def scheduler():
+#     schedule.every().day.at(time_from_db).do(create_soup)
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
+
+
+# Thread(target=scheduler, args=()).start()
 bot.polling(interval=0, timeout=0)
