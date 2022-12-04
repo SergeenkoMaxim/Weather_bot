@@ -135,10 +135,6 @@ def cut_screenshot():
     photo = open("new_screenshot.png", 'rb')
 
 
-
-
-cut_screenshot()
-
     # chrome_options = Options()
     # chrome_options.add_argument("--headless")
     # chrome_options.add_argument("--start-maximized")
@@ -161,8 +157,8 @@ cut_screenshot()
 # elif policy == '2':
 #     pass
 
-
-# schedule.every(5).seconds.do(print_current_forecast)
+#
+# schedule.every().day.at("23:25").do(print_current_forecast)
 #
 # while True:
 #     schedule.run_pending()
